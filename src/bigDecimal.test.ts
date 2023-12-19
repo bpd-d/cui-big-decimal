@@ -9,7 +9,7 @@ describe("BigDecimal", () => {
     expect(value.toString()).toBe("1");
   });
 
-  test("Properly initializes from string - trims tailing zeros", () => {
+  test("Properly initializes from string - trims trailing zeros", () => {
     const value = new BigDecimal("1.00");
 
     expect(value.toString()).toBe("1");
@@ -138,5 +138,13 @@ describe("BigDecimal - divide", () => {
     const result = value.divide("-2.1");
 
     expect(result.toString()).toEqual("-725296.304423809523809524");
+  });
+});
+
+describe("BigDecimal - toScale", () => {
+  test("Trims value", () => {
+    const value = new BigDecimal("123.22131");
+
+    expect(value.toScale(2)).toEqual("123.22");
   });
 });
