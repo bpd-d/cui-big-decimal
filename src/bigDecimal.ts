@@ -1,8 +1,6 @@
-import { toBigInt } from "./utils";
+import { bigIntToDecimalString, toBigInt } from "./utils";
 
 type BigDecimalPropAllowedTypes = number | string | bigint | BigDecimal;
-
-const LEADING_TRAILING_ZEROS_REGEX = /(\.0*|0+)$/;
 
 export class BigDecimal {
   static PRECISION = 18;
@@ -58,16 +56,12 @@ export class BigDecimal {
     return this.value === v.value;
   }
 
+  toScale(scale: number) {
+    const _scale = Math.round(scale);
+    return bigIntToDecimalString(this.value, BigDecimal.PRECISION, _scale);
+  }
+
   toString() {
-    const precision = BigDecimal.PRECISION;
-    let s = this.value
-      .toString()
-      .replace("-", "")
-      .padStart(precision + 1, "0");
-    s = (s.slice(0, -precision) + "." + s.slice(-precision)).replace(
-      LEADING_TRAILING_ZEROS_REGEX,
-      ""
-    );
-    return this.value < 0 ? "-" + s : s;
+    return bigIntToDecimalString(this.value, BigDecimal.PRECISION);
   }
 }
