@@ -1,8 +1,8 @@
 import { toBigInt } from "./utils";
 
-type BigDecimalProp = number | string | bigint | BigDecimal;
+type BigDecimalPropAllowedTypes = number | string | bigint | BigDecimal;
 
-const LEADING_TAILING_ZEROS_REGEX = /(\.0*|0+)$/;
+const LEADING_TRAILING_ZEROS_REGEX = /(\.0*|0+)$/;
 
 export class BigDecimal {
   static PRECISION = 18;
@@ -10,7 +10,7 @@ export class BigDecimal {
 
   value: bigint = 0n;
 
-  constructor(value: BigDecimalProp) {
+  constructor(value: BigDecimalPropAllowedTypes) {
     if (value instanceof BigDecimal) {
       return value;
     }
@@ -34,15 +34,19 @@ export class BigDecimal {
     );
   }
 
-  add(num: BigDecimalProp) {
+  add(num: BigDecimalPropAllowedTypes) {
     return new BigDecimal(this.value + new BigDecimal(num).value);
   }
 
-  multiply(num: BigDecimalProp) {
+  subtract(num: BigDecimalPropAllowedTypes) {
+    return new BigDecimal(this.value - new BigDecimal(num).value);
+  }
+
+  multiply(num: BigDecimalPropAllowedTypes) {
     return this.#divRound(this.value * new BigDecimal(num).value, this.#shift);
   }
 
-  divide(num: BigDecimalProp) {
+  divide(num: BigDecimalPropAllowedTypes) {
     return this.#divRound(this.value * this.#shift, new BigDecimal(num).value);
   }
 
@@ -61,7 +65,7 @@ export class BigDecimal {
       .replace("-", "")
       .padStart(precision + 1, "0");
     s = (s.slice(0, -precision) + "." + s.slice(-precision)).replace(
-      LEADING_TAILING_ZEROS_REGEX,
+      LEADING_TRAILING_ZEROS_REGEX,
       ""
     );
     return this.value < 0 ? "-" + s : s;
