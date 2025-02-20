@@ -5,7 +5,6 @@ import { BigDecimal } from "./bigDecimal";
 describe("BigDecimal", () => {
   test("Properly initializes from number", () => {
     const value = new BigDecimal(1);
-
     expect(value.toString()).toBe("1");
   });
 
