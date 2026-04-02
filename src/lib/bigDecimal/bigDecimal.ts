@@ -1,4 +1,6 @@
 import {
+  bigIntDivide,
+  bigIntMultiply,
   calculateShift,
   convertToString,
   convertToStringWithScale,
@@ -38,10 +40,6 @@ export class BigDecimal {
     );
   }
 
-  get #shift() {
-    return calculateShift(this.#options.precision);
-  }
-
   static from(value: BigDecimalInput, options?: Partial<BigDecimalOptions>) {
     return new BigDecimal(value, options);
   }
@@ -57,22 +55,16 @@ export class BigDecimal {
   }
 
   multiply(num: BigDecimalInput) {
+    const mulitplier = BigDecimal.from(num, this.#options).toBigInt();
     return BigDecimal.from(
-      divRound(
-        this.#value * BigDecimal.from(num, this.#options).toBigInt(),
-        this.#shift,
-        this.#options.rounding,
-      ),
+      bigIntMultiply(this.#value, mulitplier, this.#options)
     );
   }
 
   divide(num: BigDecimalInput) {
+    const divisor = BigDecimal.from(num, this.#options).toBigInt();
     return BigDecimal.from(
-      divRound(
-        this.#value * this.#shift,
-        BigDecimal.from(num, this.#options).toBigInt(),
-        this.#options.rounding,
-      ),
+      bigIntDivide(this.#value, divisor, this.#options)
     );
   }
 

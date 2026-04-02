@@ -71,9 +71,7 @@ export const toBigInt = (
 
 export const convertToString = (value: bigint, precision: number) => {
   const stringVal = prepareValue(value, precision);
-  console.log("stringVal", stringVal, precision);
   const trimmedValue = trimValue(stringVal, precision);
-  console.log("trimmedValue", trimmedValue);
   return adjustValueSign(value, trimmedValue);
 };
 
@@ -105,3 +103,27 @@ export const divRound = (
 export const calculateShift = (precision: number) => {
   return BigInt("1" + "0".repeat(precision));
 };
+
+/**
+ * Performs division operation of two values with specified precision and rounding strategy
+ * @param {bigint} dividend - current value
+ * @param {bigint} divisor - value which current value is divided by
+ * @param {BigDecimalOptions} options - big decimal options
+ * @returns result of math division
+ */
+export const bigIntDivide = (dividend: bigint, divisor: bigint, options: BigDecimalOptions) => {
+  const shift = calculateShift(options.precision);
+  return divRound(dividend * shift, divisor, options.rounding);
+}
+
+/**
+ * Performs multiply operation of two values with specified precision and rounding strategy
+ * @param {bigint} value 
+ * @param {bigint} mulitplier 
+ * @param {BigDecimalOptions} options 
+ * @returns result of math mulitplication
+ */
+export const bigIntMultiply = (value: bigint, mulitplier: bigint, options: BigDecimalOptions) => {
+  const shift = calculateShift(options.precision);
+  return divRound(value * mulitplier, shift, options.rounding);
+}
