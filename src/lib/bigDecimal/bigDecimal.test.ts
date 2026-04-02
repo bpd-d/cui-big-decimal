@@ -91,12 +91,12 @@ describe("BigDecimal - subtract", () => {
 
   test("Handles negative numbers", () => {
     const value = new BigDecimal(
-      "-90000000000000000000000000.00012323214444122"
+      "-90000000000000000000000000.00012323214444122",
     );
     const result = value.subtract("8000.000099");
 
     expect(result.toString()).toBe(
-      "-90000000000000000000008000.00022223214444122"
+      "-90000000000000000000008000.00022223214444122",
     );
   });
 });
@@ -137,5 +137,70 @@ describe("BigDecimal - divide", () => {
     const result = value.divide("-2.1");
 
     expect(result.toString()).toEqual("-725296.304423809523809524");
+  });
+});
+
+describe("BigDecimal - equalTo / equals", () => {
+  test("Compares two equal values", () => {
+    const value1 = new BigDecimal("1523122.23929");
+    const value2 = new BigDecimal("1523122.23929");
+
+    expect(value1.equalTo(value2)).toBe(true);
+    expect(value1.equals(value2)).toBe(true);
+  });
+
+  test("Compares two different values", () => {
+    const value1 = new BigDecimal("1523122.23929");
+    const value2 = new BigDecimal("1523122.23928");
+
+    expect(value1.equalTo(value2)).toBe(false);
+    expect(value1.equals(value2)).toBe(false);
+  });
+
+  test("Compares values with different precision", () => {
+    const value1 = new BigDecimal("1523122.239290000");
+    const value2 = new BigDecimal("1523122.23929");
+
+    expect(value1.equalTo(value2)).toBe(true);
+    expect(value1.equals(value2)).toBe(true);
+  });
+});
+
+describe("BigDecimal - toString", () => {
+  test("Formats number properly", () => {
+    const value = new BigDecimal("1523122.239290000");
+    expect(value.toString()).toBe("1523122.23929");
+  });
+
+  test("Formats negative numbers properly", () => {
+    const value = new BigDecimal("-1523122.239290000");
+    expect(value.toString()).toBe("-1523122.23929");
+  });
+
+  test("Formats numbers with large precision properly", () => {
+    const value = new BigDecimal("0.000000000000000001");
+    expect(value.toString()).toBe("0.000000000000000001");
+  });
+});
+
+describe("BigDecimal - asString", () => {
+  test("Formats number with different precision properly", () => {
+    const value = new BigDecimal("1523122.239290000");
+    expect(value.asString(2)).toBe("1523122.2392900000");
+  });
+
+  test("Formats number with different precision and rounding properly", () => {
+    const value = new BigDecimal("1523122.239290000");
+    expect(value.asString(10)).toBe("1523122.2392900000");
+  });
+
+  test("Formats number with different precision and rounding properly - rounds up", () => {
+    const value = new BigDecimal("1523122.2392900009");
+    expect(value.asString(10)).toBe("1523122.2392900010");
+  });
+
+  test("Formats number with different precision and rounding properly - rounds down", () => {
+    const value = new BigDecimal("1523122.2392900004");
+    expect(value.asString(10)).toBe("1523122.2392900000");
   });
 });
