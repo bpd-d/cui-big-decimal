@@ -1,8 +1,7 @@
 import { BigDecimalOptions } from "./bigDecimal.types";
 
-class BigDecimalFactory {
-    #options: BigDecimalOptions | undefined;
-    constructor(options?: BigDecimalOptions) {
-        this.#options = options
+const BigDecimalFactory = (options?: BigDecimalOptions) => {
+    return {
+
     }
 }
