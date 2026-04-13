@@ -1,23 +1,18 @@
 import {
   bigIntDivide,
   bigIntMultiply,
-  calculateShift,
   convertToString,
   convertToStringWithScale,
-  divRound,
+
   toBigInt,
 } from "./bigDecimal.helpers";
 import {
   BigDecimalDefaultOptions,
   initBigDecimalOptions,
 } from "./bigDecimal.options";
-import { BigDecimalRoundingMode } from "./bigDecimal.rounding";
 import { BigDecimalInput, BigDecimalOptions } from "./bigDecimal.types";
 
 export class BigDecimal {
-  static PRECISION = 18;
-  static ROUNDING_MODE = BigDecimalRoundingMode.HALF_UP;
-
   #value: bigint = 0n;
   #options: BigDecimalOptions = BigDecimalDefaultOptions;
 
@@ -89,7 +84,7 @@ export class BigDecimal {
 
     return convertToStringWithScale(this.#value, {
       ...this.#options,
-      scale: scale ?? this.#options.scale,
+      scale: newScale
     });
   }
 
