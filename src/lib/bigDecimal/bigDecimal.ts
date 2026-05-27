@@ -3,7 +3,6 @@ import {
   bigIntMultiply,
   convertToString,
   convertToStringWithScale,
-
   toBigInt,
 } from "./bigDecimal.helpers";
 import {
@@ -52,15 +51,13 @@ export class BigDecimal {
   multiply(num: BigDecimalInput) {
     const mulitplier = BigDecimal.from(num, this.#options).toBigInt();
     return BigDecimal.from(
-      bigIntMultiply(this.#value, mulitplier, this.#options)
+      bigIntMultiply(this.#value, mulitplier, this.#options),
     );
   }
 
   divide(num: BigDecimalInput) {
     const divisor = BigDecimal.from(num, this.#options).toBigInt();
-    return BigDecimal.from(
-      bigIntDivide(this.#value, divisor, this.#options)
-    );
+    return BigDecimal.from(bigIntDivide(this.#value, divisor, this.#options));
   }
 
   toBigInt() {
@@ -84,7 +81,7 @@ export class BigDecimal {
 
     return convertToStringWithScale(this.#value, {
       ...this.#options,
-      scale: newScale
+      scale: newScale,
     });
   }
 
